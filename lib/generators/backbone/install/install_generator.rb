@@ -35,6 +35,10 @@ module Backbone
         template "app#{ext}", "#{javascript_path}/#{app_filename}#{ext}"
       end
 
+      def js_manifest_dependencies
+        [app_file_name, ]
+      end
+
       def inject_backbone
         manifest = File.join(javascript_path, options.manifest)
         libs = %w(underscore backbone)
