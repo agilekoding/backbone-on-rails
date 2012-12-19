@@ -87,6 +87,14 @@ module Backbone
         @templates_namespace.to_s.camelize
       end
 
+      def sample_templates
+        %w{index new edit form show}
+      end
+
+      def collection_url
+        "/#{file_name.pluralize}"
+      end
+
     end
   end
 end

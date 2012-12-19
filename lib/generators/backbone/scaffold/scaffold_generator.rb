@@ -53,12 +53,6 @@ module Backbone
         end
       end
 
-      private
-
-      def sample_templates
-        %w{index new edit form show}
-      end
-
     end
   end
 end
