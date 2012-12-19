@@ -9,6 +9,8 @@ module Backbone
 
       desc "Generates a Backbone.js resource scaffold"
 
+      argument :model_attrs, type: :array, default: [], banner: "fields:type field:type"
+
       class_option :javascript,
                     type: :boolean,
                     aliases: "-j",
