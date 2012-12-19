@@ -24,7 +24,7 @@ module Backbone
         @ext  = js ? ".js" : ".js.coffee"
         @tmpl = ".js.hamlbars"
         @templates_namespace = "HandlebarsTemplates"
-        model_attrs = attributes.map{|a| arr = a.split(':'); {"#{arr[0]}" => "#{arr[1]}"}}
+        #model_attrs = attributes.map{|a| arr = a.split(':'); {"#{arr[0]}" => "#{arr[1]}"}}
       end
 
       def create_backbone_model
