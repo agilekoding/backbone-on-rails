@@ -18,7 +18,7 @@ module Backbone
       def parse_options
         js = options.javascript
         @ext  = js ? ".js" : ".js.coffee"
-        @tmpl = ".hamlbars"
+        @tmpl = ".js.hamlbars"
       end
 
       def create_backbone_model
