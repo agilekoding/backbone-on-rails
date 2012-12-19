@@ -19,6 +19,7 @@ module Backbone
         js = options.javascript
         @ext  = js ? ".js" : ".js.coffee"
         @tmpl = ".js.hamlbars"
+        @templates_namespace = "HandlebarsTemplates"
       end
 
       def create_backbone_model
