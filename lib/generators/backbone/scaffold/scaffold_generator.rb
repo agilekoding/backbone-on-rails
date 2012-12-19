@@ -47,7 +47,7 @@ module Backbone
       def create_backbone_template
         empty_directory File.join(template_path, file_name.pluralize)
         sample_templates.each do |sample|
-          file = File.join(template_path, file_name.pluralize, template_file_name(sample))
+          file = File.join(template_path, file_name.pluralize, "#{filename.pluralize}_#{sample}_template#{@tmpl}")
           template "#{sample}_template#{@tmpl}", file
         end
       end
