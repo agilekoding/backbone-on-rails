@@ -37,7 +37,7 @@ module Backbone
 
       def inject_backbone
         manifest = File.join(javascript_path, options.manifest)
-        libs = %w(underscore backbone handlebars.runtime)
+        libs = %w(underscore backbone handlebars)
         paths = %w(./templates ./models ./collections ./views ./routers)
 
         out = []
