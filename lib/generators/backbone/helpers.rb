@@ -27,7 +27,7 @@ module Backbone
       end
 
       def template_path
-        File.join(asset_path, "templates")
+        File.join(javascript_path, "templates")
       end
 
       def singular_file_name
@@ -42,8 +42,12 @@ module Backbone
         "#{file_name.pluralize}_router#{@ext}"
       end
 
-      def view_file_name
-        "#{file_name.pluralize}_index#{@ext}"
+      def view_file_name view_name = 'index'
+        "#{file_name.pluralize}_#{view_name}_view#{@ext}"
+      end
+
+      def template_file_name template_name = 'index'
+        "#{filename.pluralize}_#{template_name}_template#{@tmpl}"
       end
 
       def model_namespace
@@ -51,19 +55,20 @@ module Backbone
       end
 
       def collection_namespace
-        [app_name, "Collections", file_name.pluralize.camelize].join(".")
+        [app_name, "Collections", "#{file_name.pluralize}_collection".camelize].join(".")
       end
 
       def router_namespace
-        [app_name, "Routers", file_name.pluralize.camelize].join(".")
+        [app_name, "Routers", "#{file_name.pluralize}_router".camelize].join(".")
       end
 
-      def view_namespace
-        [app_name, "Views", "#{file_name.pluralize.camelize}Index"].join(".")
+      def view_namespace view_name = 'Index'
+        view_name = view_name.camelize
+        [app_name, "Views", "#{file_name.pluralize.camelize}#{view_name}View"].join(".")
       end
 
-      def template_namespace
-        File.join(file_path.pluralize, "index")
+      def template_namespace template_name = 'index'
+        File.join(file_path.pluralize, template_name)
       end
 
       def app_name
@@ -76,6 +81,10 @@ module Backbone
 
       def rails_app_name
         Rails.application.class.name.split('::').first
+      end
+
+      def templates_namespace
+        @templates_namespace.to_s.camelize
       end
 
     end

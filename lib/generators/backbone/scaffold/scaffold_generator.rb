@@ -17,8 +17,8 @@ module Backbone
 
       def parse_options
         js = options.javascript
-        @ext = js ? ".js" : ".js.coffee"
-        @jst = js ? ".ejs" : ".eco"
+        @ext  = js ? ".js" : ".js.coffee"
+        @tmpl = ".hamlbars"
       end
 
       def create_backbone_model
@@ -38,14 +38,24 @@ module Backbone
 
       def create_backbone_view
         empty_directory File.join(view_path, file_name.pluralize)
-        file = File.join(view_path, file_name.pluralize, view_file_name)
-        template "view#{@ext}", file
+        sample_templates.each do |sample|
+          file = File.join(view_path, file_name.pluralize, view_file_name(sample))
+          template "view#{@ext}", file
+        end
       end
 
       def create_backbone_template
         empty_directory File.join(template_path, file_name.pluralize)
-        file = File.join(template_path, file_name.pluralize, "index.jst#{@jst}")
-        template "template.jst#{@jst}", file
+        sample_templates.each do |sample|
+          file = File.join(template_path, file_name.pluralize, template_file_name(sample))
+          template "#{sample}_template#{@tmpl}", file
+        end
+      end
+
+      private
+
+      def sample_templates
+        %w{index new edit form show}
       end
 
     end

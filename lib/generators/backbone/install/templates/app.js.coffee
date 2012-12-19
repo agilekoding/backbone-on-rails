@@ -3,7 +3,10 @@ window.<%= app_name %> =
   Collections: {}
   Views: {}
   Routers: {}
-  initialize: -> alert 'Hello from Backbone!'
+  initialize: ->
+    window.routers = []
+    _.each(Object.keys(<%= app_name %>.Routers), (routerName) -> window.routers.push(new <%= app_name %>.Routers[routerName]()))
+    Backbone.history.start()
 
 $(document).ready ->
   <%= app_name %>.initialize()

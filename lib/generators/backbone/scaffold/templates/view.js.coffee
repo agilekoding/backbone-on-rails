@@ -1,3 +1,3 @@
 class <%= view_namespace %> extends Backbone.View
 
-  template: JST['<%= template_namespace %>']
+  template: <%= templates_namespace %>['<%= template_namespace(sample) %>']
