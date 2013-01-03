@@ -44,7 +44,9 @@ module Backbone
       def create_backbone_view
         empty_directory File.join(view_path, file_name.pluralize)
         sample_templates.each do |sample|
+          current_view = sample.to_s
           file = File.join(view_path, file_name.pluralize, view_file_name(sample))
+          #template "#{sample}_view#{@ext}", file
           template "view#{@ext}", file
         end
       end
