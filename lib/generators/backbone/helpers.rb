@@ -2,8 +2,6 @@ module Backbone
   module Generators
     module Helpers
 
-      attr_accessor :current_view
-
       def asset_path
         File.join('app', 'assets')
       end
@@ -65,7 +63,7 @@ module Backbone
       end
 
       def view_namespace
-        view_name = current_view
+        view_name = @current_view
         view_name = view_name.camelize
         [app_name, "Views", "#{file_name.pluralize.camelize}#{view_name}View"].join(".")
       end
@@ -75,7 +73,7 @@ module Backbone
       end
 
       def template_namespace
-        template_name = current_view
+        template_name = @current_view
         File.join(file_path.pluralize, template_name)
       end
 
