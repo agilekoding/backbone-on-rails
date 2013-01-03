@@ -65,13 +65,17 @@ module Backbone
       end
 
       def view_namespace
-        view_name = current_view || 'Index'
+        view_name = current_view
         view_name = view_name.camelize
         [app_name, "Views", "#{file_name.pluralize.camelize}#{view_name}View"].join(".")
       end
 
+      def custom_view_namespace view_name
+        [app_name, "Views", "#{file_name.pluralize.camelize}#{view_name.camelize}View"].join(".")
+      end
+
       def template_namespace
-        template_name = current_view || 'index'
+        template_name = current_view
         File.join(file_path.pluralize, template_name)
       end
 

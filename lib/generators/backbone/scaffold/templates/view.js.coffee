@@ -19,7 +19,9 @@ class <%= view_namespace %> extends Backbone.View
       #   console.log(domElementThatTriggeredTheEvent)
     })
 
-  # The render method is responsible of inserting a rendered template inside the @el property. Note that it does not render anything to the screen, that is to be handled on the router.
+  # The render method is responsible of calling and implementing any and all of the rendering logic. You should call the 'template' method here and return whatever markup it returns, but you can optionally handle any other rendering logic here.
   render: () ->
-    @$(@el).html(@template(data: @options.backbone_data.toJSON(true, true)))
-    @
+    # The following line invokes the template engine and sends a backbone model's atributes in JSON format as the data.
+    # You can either uncomment it or use the data-less call to 'template' below, just make sure you return the proper one.
+    # @template(data: @options.backbone_data.toJSON(true, true))
+    @template(data: {})

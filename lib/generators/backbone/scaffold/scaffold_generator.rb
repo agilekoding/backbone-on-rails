@@ -22,7 +22,7 @@ module Backbone
       def parse_options
         js = options.javascript
         @ext  = js ? ".js" : ".js.coffee"
-        @tmpl = ".js.hamlbars"
+        @tmpl = ".hamlbars"
         @templates_namespace = "HandlebarsTemplates"
       end
 
@@ -54,7 +54,7 @@ module Backbone
       def create_backbone_template
         empty_directory File.join(template_path, file_name.pluralize)
         sample_templates.each do |sample|
-          file = File.join(template_path, file_name.pluralize, "#{file_name.pluralize}_#{sample}_template#{@tmpl}")
+          file = File.join(template_path, file_name.pluralize, "#{sample}#{@tmpl}")
           template "#{sample}_template#{@tmpl}", file
         end
       end
