@@ -9,7 +9,7 @@ module Backbone
 
       desc "Generates a Backbone.js resource scaffold"
 
-      argument :attributes, type: :array, default: [], banner: "fields:type field:type"
+      argument :attributes, type: :array, default: [], banner: "field:type field:type"
 
       class_option :javascript,
                     type: :boolean,
@@ -24,7 +24,6 @@ module Backbone
         @ext  = js ? ".js" : ".js.coffee"
         @tmpl = ".js.hamlbars"
         @templates_namespace = "HandlebarsTemplates"
-        #model_attrs = attributes.map{|a| arr = a.split(':'); {"#{arr[0]}" => "#{arr[1]}"}}
       end
 
       def create_backbone_model
