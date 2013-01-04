@@ -5,7 +5,7 @@ window.<%= app_name %> =
   Routers: {}
   initialize: ->
     window.routers = []
-    _.each(_.keys(<%= app_name %>.Routers), (routerName) -> window.routers.push(new <%= app_name %>.Routers[routerName]()))
+    _.each(_.keys(@Routers), (routerName) => window.routers.push(new @Routers[routerName]()))
     Backbone.history.start()
 
 $(document).ready ->
