@@ -6,6 +6,7 @@ class <%= view_namespace %> extends Backbone.View
   # Place all the view's initialization logic here.
   initialize: () ->
     @modelBinder = new Backbone.ModelBinder()
+    super(arguments...)
 
   # Backbone allows a simple and declarative way of declaring events, this is where you should specify them
   events:
@@ -22,7 +23,7 @@ class <%= view_namespace %> extends Backbone.View
       #   domElementThatTriggeredTheEvent = event.currentTarget
       #   console.log(domElementThatTriggeredTheEvent)
       "submit #<%= view_name.pluralize %>_form" : "save"
-    })
+    }
 
   # The render method is responsible of inserting a rendered template inside the @el property. This is a good place to bind your model with your view. Note that it does not render anything to the screen, that is to be handled on the router.
   render: () ->
