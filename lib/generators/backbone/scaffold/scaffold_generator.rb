@@ -22,7 +22,7 @@ module Backbone
       def parse_options
         js = options.javascript
         @ext  = js ? ".js" : ".js.coffee"
-        @tmpl = ".handlebars.haml"
+        @tmpl = ".hbs.haml"
         @templates_namespace = "HandlebarsTemplates"
       end
 
