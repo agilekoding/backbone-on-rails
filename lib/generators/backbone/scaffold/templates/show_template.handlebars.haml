@@ -1,0 +1,16 @@
+.details
+  .controls
+    %ul
+      %li= link_to "Edit", "#", :class => 'edit'
+      %li= link_to "Delete", "#", :class => 'destroy'
+      %li= link_to "Back", "#", :class => 'back'
+  .span8
+    %span
+      %strong <%= file_name.camelize %>
+    %span{:"data-name" => 'id'}
+<% attributes.each do |a| -%>
+  .span8
+    .attribute_name
+      %strong <%= a.name.camelize %>
+      %span.attribute_value{:"data-name" => '<%= a.name %>'}
+<% end -%>

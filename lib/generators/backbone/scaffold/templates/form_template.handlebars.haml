@@ -1,0 +1,8 @@
+= form_for <%= file_name.camelize %>.new, html: {id: "<%= file_name.pluralize %>_form"} do |f|
+<% attributes.each do |a| -%>
+  .span8
+    .span12= f.label :<%= a.name %>
+    .span12= text_field_tag :<%= a.name %>
+<% end -%>
+  .form-controls.pull-right
+    = f.submit "save"
