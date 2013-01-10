@@ -17,10 +17,10 @@ class <%= router_namespace %> extends Backbone.Router
     @appMain('<%= file_name.pluralize.camelize %>Index', {collection: @collection})
 
   newModel: () ->
-    @appForm('<%= file_name.pluralize.camelize %>New', {collection: @collection, model: new @collection.model()})
+    @appMain('<%= file_name.pluralize.camelize %>New', {collection: @collection, model: new @collection.model()})
 
   edit: (id) ->
-    @appForm('<%= file_name.pluralize.camelize %>Edit', {collection: @collection, model: @getResource(id)})
+    @appMain('<%= file_name.pluralize.camelize %>Edit', {collection: @collection, model: @getResource(id)})
 
   show: (id) ->
     @appMain('<%= file_name.pluralize.camelize %>Show', {model: @getResource(id)})
@@ -29,15 +29,17 @@ class <%= router_namespace %> extends Backbone.Router
 
   getResource: (id) ->
     @model = @collection.get(id) || new @collection.model(id: id)
-    responseText = @model.fetch().responseText
-    @resourceNotFound = true if responseText is null
+    @model.fetch()
     @model
 
-  appMain: (rawViewName, viewData) ->
-    @renderOn(<%= app_name %>.Desktop.main, rawViewName, viewData)
+  clearWorkSpace: (workSpace) ->
+    <%= app_name %>.Desktop.clear(workSpace)
 
-  appForm: (rawViewName, viewData) ->
-    @renderOn(<%= app_name %>.Desktop.forms.primary, rawViewName, viewData)
+  appMain: (rawViewName, viewData) ->
+    @renderOn(<%= app_name %>.Desktop.app.main, rawViewName, viewData)
+
+  appDetail: (rawViewName, viewData) ->
+    @renderOn(<%= app_name %>.Desktop.app.detail, rawViewName, viewData)
 
   renderOn: (container, rawViewName, viewData) ->
     $(container).html(new <%= app_name %>.Views["#{rawViewName}View"](viewData).render().el)

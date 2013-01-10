@@ -47,11 +47,15 @@ class <%= view_namespace %> extends Backbone.View
   destroy: (e) ->
     e.preventDefault()
     @model.destroy()
-    window.location.hash = @model.urlRoot
-
-  back: (e) ->
-    e.preventDefault()
-    window.location.hash = @model.urlRoot
+    @remove()
 
   editPath: (direction, value, attribute, model) ->
     "##{model.urlRoot}/#{value}/edit"
+
+  close: (e) ->
+    e.preventDefault()
+    @remove()
+
+  remove: () ->
+    @modelBinder.unbind()
+    $(@el).remove()
