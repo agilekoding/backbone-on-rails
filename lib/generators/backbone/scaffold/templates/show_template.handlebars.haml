@@ -1,11 +1,11 @@
 .details
   .controls
-    %ul
+    %ul.tabs
       %li= link_to "Edit", "#", :class => 'edit'
       %li= link_to "Delete", "#", :class => 'destroy'
       %li= link_to "Back", "#", :class => 'back'
   .span8
-    %span
+    %h4
       %strong <%= file_name.camelize %>
     %span{:"data-name" => 'id'}
 <% attributes.each do |a| -%>

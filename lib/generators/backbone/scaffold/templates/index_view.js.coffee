@@ -13,7 +13,7 @@ class <%= view_namespace %> extends Backbone.View
     id: [
       {selector: '[data-name=id]'}
       {selector: '', elAttribute: 'id'}
-      {selector: 'a.show', elAttribute: 'href', converter: @showPath}
+      {selector: 'a.show_detail', elAttribute: 'href', converter: @showPath}
       {selector: 'a.edit', elAttribute: 'href', converter: @editPath}
     ]
 <% attributes.each do |a| -%>
