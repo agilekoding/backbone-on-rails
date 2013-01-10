@@ -1,7 +1,7 @@
 = link_to "New <%= file_name.camelize %>", "#<%= file_name.pluralize %>/new", :class => 'btn'
 %table.table.table-striped.table-bordered.table-condensed
   %thead
-    %tr
+    %tr.row-fluid
 <% attributes.each do |a| -%>
       %th <%= a.name.camelize %>
 <% end -%>

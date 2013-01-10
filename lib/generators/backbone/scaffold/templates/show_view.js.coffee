@@ -32,7 +32,7 @@ class <%= view_namespace %> extends Backbone.View
       #   domElementThatTriggeredTheEvent = event.currentTarget
       #   console.log(domElementThatTriggeredTheEvent)
       "click .destroy" : "destroy"
-      "click .back" : "back"
+      "click .close" : "close"
     }
 
   # The render method is responsible of calling and implementing any and all of the rendering logic. You should call the 'template' method here and return whatever markup it returns, but you can optionally handle any other rendering logic here.
