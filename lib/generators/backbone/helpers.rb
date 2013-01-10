@@ -93,8 +93,12 @@ module Backbone
         @templates_namespace.to_s.camelize
       end
 
+      def sample_views
+        %w{index new edit show}
+      end
+
       def sample_templates
-        %w{index new edit form show}
+        %w{index line_item new edit _form show}
       end
 
       def collection_url
