@@ -1,8 +1,10 @@
 = form_for <%= file_name.camelize %>.new, html: {id: "<%= file_name.pluralize %>_form"} do |f|
 <% attributes.each do |a| -%>
   .span11
-    .span12= f.label :<%= a.name %>
-    .span12= text_field_tag :<%= a.name %>, '', :class => 'span12'
+    .span11= f.label :<%= a.name %>
+    .span11= text_field_tag :<%= a.name %>, '', :class => 'span12'
 <% end -%>
-  .form-controls.row-fluid
-    .span11= f.submit "save", :class => 'pull-right'
+  .form-controls.row-fluid.btn-group
+    .span11
+      %input{:type => 'submit', :class => 'btn btn-primary pull-right', :value => 'Save'}
+      %input{:type => 'reset', :class => 'btn btn-secondary pull-right', :value => 'Reset'}
