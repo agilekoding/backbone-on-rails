@@ -46,7 +46,7 @@ module Backbone
         sample_views.each do |sample|
           @current_view = sample.to_s
           file = File.join(view_path, file_name.pluralize, view_file_name(sample))
-          template "view#{@ext}", file
+          template "#{sample}_view#{@ext}", file
         end
       end
 
