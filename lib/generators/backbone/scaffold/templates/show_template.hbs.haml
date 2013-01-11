@@ -1,13 +1,17 @@
 .details
-  .controls
-    %ul.tabs
-      %li= link_to "Close", "#", :class => 'close btn'
-      %li= link_to "Edit", "#", :class => 'edit btn'
-      %li= link_to "Delete", "#", :class => 'destroy btn'
-  .span8
-    %h4
-      %strong <%= file_name.camelize %>
-    %span{:"data-name" => 'id'}
+  .controls.btn-group.pull-right
+    = link_to "#", :class => 'edit btn' do
+      %span.icon-edit
+      Edit
+    = link_to "#", :class => 'destroy btn' do
+      %span.icon-trash
+      Delete
+    = link_to "#", :class => 'close-self btn' do
+      %span.icon-remove
+      Close
+  .page-header
+    %h3
+      %strong <%= file_name.camelize %> detail
 <% attributes.each do |a| -%>
   .span8
     .attribute_name

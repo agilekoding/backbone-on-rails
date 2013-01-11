@@ -1,5 +1,10 @@
-= link_to "New <%= file_name.camelize %>", "#<%= file_name.pluralize %>/new", :class => 'btn'
-%table.table.table-striped.table-bordered.table-condensed
+.btn-group.pull-right
+  = link_to "#<%= file_name.pluralize %>/new", :class => 'btn' do
+    %span.icon-plus
+    = "New <%= file_name.camelize %>"
+.page-header
+  %h2 <%= file_name.pluralize.camelize %>
+%table.table.table-striped.table-bordered.table-condensed.table-hover
   %thead
     %tr.row-fluid
 <% attributes.each do |a| -%>
