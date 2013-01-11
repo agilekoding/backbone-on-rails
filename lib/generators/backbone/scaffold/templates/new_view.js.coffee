@@ -34,7 +34,7 @@ class <%= view_namespace %> extends Backbone.View
   # This method handles the submit event on the form.
   save: (e) ->
     e.preventDefault()
-    @collection.create(@model)
+    @model.save()
     @remove()
 
   # You should call this method when you want the view's @el removed from the DOM, as this will automatically unbind the view from the model, killing references to each other.

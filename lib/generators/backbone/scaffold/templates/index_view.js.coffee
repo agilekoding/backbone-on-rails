@@ -11,7 +11,6 @@ class <%= view_namespace %> extends Backbone.View
 
   bindings: () ->
     id: [
-      {selector: '[data-name=id]'}
       {selector: '', elAttribute: 'id'}
       {selector: 'a.show_detail', elAttribute: 'href', converter: @showPath}
       {selector: 'a.edit', elAttribute: 'href', converter: @editPath}

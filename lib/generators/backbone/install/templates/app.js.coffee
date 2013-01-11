@@ -4,7 +4,7 @@ window.<%= app_name %> =
   Views: {}
   Routers: {}
   Desktop: {
-    app: $("#app_container")
+    app:
       main: $("#app_container #main")
       detail: $("#app_container #detail")
       forms:

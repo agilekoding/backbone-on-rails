@@ -1,9 +1,9 @@
 .details
   .controls
     %ul.tabs
+      %li= link_to "Close", "#", :class => 'close btn'
       %li= link_to "Edit", "#", :class => 'edit btn'
       %li= link_to "Delete", "#", :class => 'destroy btn'
-      %li= link_to "Close", "#", :class => 'close btn'
   .span8
     %h4
       %strong <%= file_name.camelize %>
