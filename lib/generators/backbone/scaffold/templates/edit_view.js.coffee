@@ -22,7 +22,7 @@ class <%= view_namespace %> extends Backbone.View
       # veryImportantAction: (event) ->
       #   domElementThatTriggeredTheEvent = event.currentTarget
       #   console.log(domElementThatTriggeredTheEvent)
-      "submit #<%= view_name.pluralize %>_form" : "save"
+      "submit #<%= file_name.pluralize %>_form" : "save"
     }
 
   # The render method is responsible of inserting a rendered template inside the @el property. This is a good place to bind your model with your view. Note that it does not render anything to the screen, that is to be handled on the router.
