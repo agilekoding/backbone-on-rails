@@ -23,7 +23,7 @@ class <%= router_namespace %> extends Backbone.Router
     @appMain('<%= file_name.pluralize.camelize %>Edit', {collection: @collection, model: @getResource(id)})
 
   show: (id) ->
-    @appDetail('<%= file_name.pluralize.camelize %>Show', {model: @getResource(id)})
+    @appMain('<%= file_name.pluralize.camelize %>Show', {model: @getResource(id)})
 
   #TODO Move the following code to another class, and make all the routers extend that class
 
