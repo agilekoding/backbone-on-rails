@@ -34,12 +34,11 @@ class <%= view_namespace %> extends Backbone.View
       #   domElementThatTriggeredTheEvent = event.currentTarget
       #   console.log(domElementThatTriggeredTheEvent)
       "click .destroy" : "destroy"
+      "click .detail" : "detail"
     }
 
-  # The render method is responsible of calling and implementing any and all of the rendering logic. You should call the 'template' method here and return whatever markup it returns, but you can optionally handle any other rendering logic here.
+  # The render method is responsible of calling and implementing any and all of the rendering logic. By default, the render method will fetch data from the server, and bind the collection to the 'tbody' element of the index template. This means that any member of the Backbone Collection inside the @collection attribute will be rendered inside the 'tbody' tag inside of the index template.
   render: () ->
-    # The following line invokes the template engine and sends a backbone model's atributes in JSON format as the data.
-    # You can either uncomment it or use the data-less call to 'template' below, just make sure you return the proper one.
     @collection.fetch(
       success: () =>
         $(@el).html(@template({}))
@@ -47,9 +46,17 @@ class <%= view_namespace %> extends Backbone.View
     )
     @
 
+  # Default handler for the "detail" event. This event is intended to show a mini preview of an item, showing more data than the general list but not the full information related to it. By default it renders the ShowView but that behavior can be easily changed.
+  detail: (e) ->
+    e.stopPropagation()
+    id = $(e.currentTarget).closest('tr').prop('id')
+    @detailed = @collection.get(id)
+    $(OpaiTest.Desktop.app.detail).html(new OpaiTest.Views["PostsShowView"](model: @detailed).render().el)
+
   # Default handler for the destroy event
   destroy: (e) ->
     e.preventDefault()
+    e.stopPropagation()
     id = $(e.currentTarget).closest('tr').prop('id')
     @collection.get(id).destroy()
     @collection.remove(@collection.get(id))

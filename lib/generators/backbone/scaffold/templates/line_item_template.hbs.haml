@@ -1,8 +1,8 @@
-%tr.data_row.row-fluid
+%tr.data_row.row-fluid.detail
 <% attributes.each do |a| -%>
   %td{:"data-name" => '<%= a.name %>'}
 <% end -%>
   %td.span1
-    = link_to "", "#", :class => 'show_detail icon-eye-open'
+    = link_to "", "#", :class => 'show_detail icon-search'
     = link_to "", "#", :class => 'edit icon-edit'
-    = link_to "", "#", :class => 'destroy icon-remove'
+    = link_to "", "#", :class => 'destroy icon-trash'

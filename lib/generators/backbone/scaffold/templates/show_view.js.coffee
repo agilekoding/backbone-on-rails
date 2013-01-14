@@ -31,25 +31,20 @@ class <%= view_namespace %> extends Backbone.View
       #   domElementThatTriggeredTheEvent = event.currentTarget
       #   console.log(domElementThatTriggeredTheEvent)
       "click .destroy" : "destroy"
-      "click .close" : "close"
+      "click .close-self" : "close"
     }
 
-  # The render method is responsible of calling and implementing any and all of the rendering logic. You should call the 'template' method here and return whatever markup it returns, but you can optionally handle any other rendering logic here.
+  # The render method is responsible of calling and implementing any and all of the rendering logic. The default behavior is to render the show template and bind the fields to the @model instance.
   render: () ->
-    # The following line invokes the template engine and sends a backbone model's atributes in JSON format as the data.
-    # You can either uncomment it or use the data-less call to 'template' below, just make sure you return the proper one.
-    # @template(data: @options.backbone_data.toJSON(true, true))
-    $(@el).html(@template(@model.toJSON()))
+    $(@el).html(@template({}))
     @modelBinder.bind(@model, @el, @bindings())
     @
 
+  # Default handler for the destroy event, it destroys the model and removes the view from the DOM.
   destroy: (e) ->
     e.preventDefault()
     @model.destroy()
     @remove()
-
-  editPath: (direction, value, attribute, model) ->
-    "##{model.urlRoot}/#{value}/edit"
 
   close: (e) ->
     e.preventDefault()
@@ -58,3 +53,11 @@ class <%= view_namespace %> extends Backbone.View
   remove: () ->
     @modelBinder.unbind()
     $(@el).remove()
+
+  # Route helper
+  editPath: (direction, value, attribute, model) ->
+    "##{model.urlRoot}/#{value}/edit"
+
+  # Route helper
+  indexPath: (direction, value, attribute, model) ->
+    "##{model.urlRoot}"
