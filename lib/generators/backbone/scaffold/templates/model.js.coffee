@@ -1,4 +1,4 @@
-class <%= model_namespace %> extends Backbone.Model
+class <%= model_namespace %> extends OpalExtensions.Model
   urlRoot: '<%= plural_name %>'
 
   defaults:
