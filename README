@@ -1,51 +1,53 @@
-B a c k b o n e   o n   R a i l s
+# Go!Backbone
 
-}=}=}=}=}=}=}=}=}=}=}=}=}=}=}=}=}
-
-
-  A simple gem for using Backbone.js with Rails (>= 3.1),
-  based on thoughtbot's 'Backbone.js on Rails'.
+This fork of the popular backbone-on-rails gem extends the install and scaffold generators provided by the original gem. It aims to provide tools to create the skeleton of an OPA (One Page Application) in a wink.
 
   http://git.io/backbone-on-rails
 
 
-Features
---------
+## Features
 
-  * Vendors the latest Backbone.js + Underscore.js in the asset pipeline[1]
+### From the original backbone-on-rails gem
 
-  * Provides an install generator to create a skeleton directory
-    structure and manifest
+1. Vendors the latest Backbone.js + Underscore.js in the asset pipeline[1]
 
-  * Provides a scaffold generator to create files and boilerplate
+2. Provides an install generator to create a skeleton directory structure and manifest
 
-  * Uses the naming conventions from
-    thoughtbot's 'Backbone.js on Rails' http://bit.ly/pLsmzr
+3. Provides a scaffold generator to create files and boilerplate
 
-  * Generates CoffeeScript (default) or JavaScript
+4. Uses the naming conventions from thoughtbot's 'Backbone.js on Rails' http://bit.ly/pLsmzr
 
+5. Generates CoffeeScript (default) or JavaScript[2]
 
-Usage
------
+### New features
 
-  gem 'backbone-on-rails'
+1. Vendors the following libraries in the asset pipeline
+  - Backbone.ModelBinder
+  - Backbone.CollectionBinder
+  - Backbone.RelationalModel
+  - OpalExtensions[3]
 
-  bundle install
+2. Extends the install generator to include the additional vendored assets
 
-  rails generate backbone:install
+3. Extends the scaffold generator to create some default code
 
-  rails generate backbone:scaffold NAME
+## Usage
 
-  Note:
-    Remember to restart the server after installing
+You will need to include the following line inside your Gemfile
 
-  See also:
-    http://railscasts.com/episodes/323-backbone-on-rails-part-1
-    http://railscasts.com/episodes/325-backbone-on-rails-part-2
+  gem 'backbone-on-rails', :git => 'git@github.com:e-serge/backbone-on-rails'
 
+Then you can run the usual commands:
 
-Output
-------
+bundle install
+
+rails generate backbone:install
+
+rails generate backbone:scaffold NAME
+
+Note: This Gem is still in development and it might take a while to make it to a stable version, until then, github will be hosting it.
+
+## Output
 
   Example output from backbone:scaffold planet
 
@@ -66,27 +68,6 @@ Output
       └── planets
           └── index.jst.eco
 
-
-Tricks
-------
-
-  # Custom manifest
-  rails generate backbone:install --manifest index.js
-
-  # Generate JavaScript
-  rails generate backbone:install --javascript
-
-  # Remove generated files
-  rails destroy backbone:scaffold planet
-
-
-Alternatives
-------------
-
-  For other features check out:
-
-  * https://github.com/codebrew/backbone-rails
-  * https://github.com/aflatter/backbone-rails
-
-
-[1] json2.js not included
+[1] json2.js is not included
+[2] Javascript generation is not curently supported. It's supposed to work but it will only generate the default files and directories, you will miss out on the generated code if you choose to use this option.
+[3] The OpalExtensions project is experimental, periodical updates get merged on the master branch. Use at your own risk.
