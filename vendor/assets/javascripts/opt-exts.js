@@ -109,6 +109,7 @@
 
     ViewManager.prototype.showPath = function(direction, value, attribute, model) {
       var id, urlRoot;
+      console.log(this);
       urlRoot = this.getRootPath(model);
       id = this.getResourceId(model);
       return "#" + urlRoot + "/" + id;
