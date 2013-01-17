@@ -49,7 +49,7 @@ class <%= view_namespace %> extends OpalExtensions.View
     e.stopPropagation()
     id = $(e.currentTarget).closest('tr').prop('id')
     @detailed = @collection.get(id)
-    @appDetail(OpaiTest.Views.PostsShowView, model: @detailed)
+    @appDetail(<%= app_name %>.Views.<%= file_name.pluralize.capitalize %>ShowView, model: @detailed)
 
   # Default handler for the destroy event
   destroy: (e) ->
