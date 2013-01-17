@@ -49,17 +49,23 @@ Note: This Gem is still in development and it might take a while to make it to a
 
 ## Usage
 
-It is possible to use the scafold generator much like you would use a rails scaffold generator:
+It is possible to use the scaffold generator much like you would use a rails scaffold generator:
 
   `rails generate backbone:scaffold ModelName attr_one:integer attr_two:string attr_three:date`
 
 This will create the following:
 1. A router for ModelName with default routes (`index`, `show`, `new`, `edit`)
+
 2. A collection (`ModelNamesCollection`)
+
 3. A model with it's default attributes set to null, using the provided attribute keys (Eg. `attr_one`, `attr_two` and `attr_three`)
+
 4. Views to handle the four default routes.
+
 5. View templates, for a basic instant CRUD.
 
 [1] json2.js is not included
+
 [2] Javascript generation is not curently supported. It's supposed to work but it will only generate the default files and directories, you will miss out on the generated code if you choose to use this option.
+
 [3] The OpalExtensions project is experimental, periodical updates get merged on the master branch. Use at your own risk.
