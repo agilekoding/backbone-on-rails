@@ -319,13 +319,17 @@
       return this._afterDestroy.push(func);
     };
 
+    View.prototype.render = function() {
+      return this.$el.html('');
+    };
+
     View.prototype.renderData = function(template, context) {
-      this.$el.html(template(context));
+      this.$el.append(template(context));
       return this;
     };
 
     View.prototype.renderResource = function(template, model) {
-      this.$el.html(template());
+      this.$el.append(template());
       this.modelBinder.bind(model, this.el, this.bindings());
       return this;
     };
@@ -334,7 +338,7 @@
       var _this = this;
       collection.fetch({
         success: function() {
-          _this.$el.html(template());
+          _this.$el.append(template());
           return _this.collectionBinder.bind(collection, _this.$(containerSelector));
         }
       });
