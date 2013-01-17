@@ -21,7 +21,7 @@ This fork of the popular backbone-on-rails gem extends the install and scaffold 
 
 ### New features
 
-1. Vendors the following libraries in the asset pipeline
+1. Vendors the following libraries in the asset pipeline:
   - Backbone.ModelBinder
   - Backbone.CollectionBinder
   - Backbone.RelationalModel
@@ -31,42 +31,34 @@ This fork of the popular backbone-on-rails gem extends the install and scaffold 
 
 3. Extends the scaffold generator to create some default code
 
-## Usage
+## Intallation
 
 You will need to include the following line inside your Gemfile
 
-  gem 'backbone-on-rails', :git => 'git@github.com:e-serge/backbone-on-rails'
+  `gem 'backbone-on-rails', :git => 'git@github.com:e-serge/backbone-on-rails'`
 
 Then you can run the usual commands:
 
-bundle install
+`bundle install`
 
-rails generate backbone:install
+`rails generate backbone:install`
 
-rails generate backbone:scaffold NAME
+`rails generate backbone:scaffold NAME`
 
 Note: This Gem is still in development and it might take a while to make it to a stable version, until then, github will be hosting it.
 
-## Output
+## Usage
 
-  Example output from backbone:scaffold planet
+It is possible to use the scafold generator much like you would use a rails scaffold generator:
 
-  app/assets/
-  ├── javascripts
-  │   ├── application.js
-  │   ├── space_app.js.coffee
-  │   ├── collections
-  │   │   └── planets.js.coffee
-  │   ├── models
-  │   │   └── planet.js.coffee
-  │   ├── routers
-  │   │   └── planets_router.js.coffee
-  │   └── views
-  │       └── planets
-  │           └── planets_index.js.coffee
-  └── templates
-      └── planets
-          └── index.jst.eco
+  `rails generate backbone:scaffold ModelName attr_one:integer attr_two:string attr_three:date`
+
+This will create the following:
+1. A router for ModelName with default routes (`index`, `show`, `new`, `edit`)
+2. A collection (`ModelNamesCollection`)
+3. A model with it's default attributes set to null, using the provided attribute keys (Eg. `attr_one`, `attr_two` and `attr_three`)
+4. Views to handle the four default routes.
+5. View templates, for a basic instant CRUD.
 
 [1] json2.js is not included
 [2] Javascript generation is not curently supported. It's supposed to work but it will only generate the default files and directories, you will miss out on the generated code if you choose to use this option.
