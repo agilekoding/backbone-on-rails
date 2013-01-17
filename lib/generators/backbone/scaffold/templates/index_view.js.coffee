@@ -8,9 +8,9 @@ class <%= view_namespace %> extends OpalExtensions.View
   detailed: (context) -> HandlebarsTemplates['<%= file_name.pluralize %>/show'](context)
 
   initialize: () ->
+    super(arguments...)
     @elManagerFactory = new Backbone.CollectionBinder.ElManagerFactory(@lineItem(), @bindings())
     @collectionBinder = new Backbone.CollectionBinder(@elManagerFactory)
-    super(arguments...)
 
   bindings: () ->
     id: [
