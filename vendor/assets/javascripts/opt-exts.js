@@ -269,8 +269,11 @@
     }
 
     Model.prototype.initialize = function() {
+      return Model.__super__.initialize.apply(this, arguments);
+    };
+
+    Model.prototype.setupRelations = function() {
       var _this = this;
-      Model.__super__.initialize.apply(this, arguments);
       if (this.relations != null) {
         return _.each(this.relations, function(rel) {
           var collectionUrl;

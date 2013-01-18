@@ -5,3 +5,7 @@ class <%= model_namespace %> extends OpalExtensions.Model
 <% attributes.each do |a| -%>
     <%= a.name %>: null
 <% end -%>
+
+  initialize: () ->
+    super(arguments...)
+    @setupRelations()
