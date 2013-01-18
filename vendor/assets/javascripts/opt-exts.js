@@ -262,7 +262,9 @@
 
     Collection.prototype.paginator_core = {
       dataType: 'json',
-      url: Collection.url
+      url: function() {
+        return this.url;
+      }
     };
 
     Collection.prototype.paginator_ui = {
