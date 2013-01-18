@@ -8,6 +8,40 @@
     Version: '0.0.1'
   };
 
+  String.prototype.trim = function() {
+    if (String.prototype.trim == null) {
+      return this.replace(/^\s+|\s+$/g, "");
+    }
+  };
+
+  String.prototype.ltrim = function() {
+    if (String.prototype.ltrim == null) {
+      return this.replace(/^\s+/g, "");
+    }
+  };
+
+  String.prototype.rtrim = function() {
+    if (String.prototype.rtrim == null) {
+      return this.replace(/\s+$/g, "");
+    }
+  };
+
+  String.prototype.unslash = function() {
+    if (String.prototype.unslash == null) {
+      return this.replace(/^\/+|\/+$/g, "");
+    }
+  };
+
+  String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+  };
+
+  String.prototype.camelize = function() {
+    return _.map(this.split(/\s|_|-/), function(str) {
+      return str.capitalize();
+    }).join('');
+  };
+
   OpalExtensions.Mixin = (function() {
 
     function Mixin() {}
@@ -235,7 +269,15 @@
     }
 
     Model.prototype.initialize = function() {
-      return Model.__super__.initialize.apply(this, arguments);
+      var _this = this;
+      Model.__super__.initialize.apply(this, arguments);
+      if (this.relations != null) {
+        return _.each(this.relations, function(rel) {
+          var collectionUrl;
+          collectionUrl = _this.get(rel.key).url.unslash();
+          return _this.get(rel.key).url = "" + (_this.urlRoot.unslash()) + "/" + (_this.get('id')) + "/" + collectionUrl;
+        });
+      }
     };
 
     return Model;
@@ -320,7 +362,8 @@
     };
 
     View.prototype.render = function() {
-      return this.$el.html('');
+      this.$el.html('');
+      return this;
     };
 
     View.prototype.renderData = function(template, context) {
