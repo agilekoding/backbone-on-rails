@@ -279,12 +279,14 @@
 
     Model.prototype.setupRelations = function() {
       var _this = this;
-      if (this.relations != null) {
-        return _.each(this.relations, function(rel) {
-          var collectionUrl;
-          collectionUrl = _this.get(rel.key).url.unslash();
-          return _this.get(rel.key).url = "" + (_this.urlRoot.unslash()) + "/" + (_this.get('id')) + "/" + collectionUrl;
-        });
+      if (this.Backbone.RelationalModel != null) {
+        if (this.relations != null) {
+          return _.each(this.relations, function(rel) {
+            var collectionUrl;
+            collectionUrl = _this.get(rel.key).url.unslash();
+            return _this.get(rel.key).url = "" + (_this.urlRoot.unslash()) + "/" + (_this.get('id')) + "/" + collectionUrl;
+          });
+        }
       }
     };
 
@@ -386,13 +388,8 @@
     };
 
     View.prototype.renderCollection = function(template, collection, containerSelector) {
-      var _this = this;
-      collection.fetch({
-        success: function() {
-          _this.$el.append(template());
-          return _this.collectionBinder.bind(collection, _this.$(containerSelector));
-        }
-      });
+      this.$el.append(template());
+      this.collectionBinder.bind(collection, this.$(containerSelector));
       return this;
     };
 

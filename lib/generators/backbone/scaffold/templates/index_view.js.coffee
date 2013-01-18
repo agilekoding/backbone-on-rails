@@ -40,7 +40,7 @@ class <%= view_namespace %> extends OpalExtensions.View
   # Collection inside the @collection attribute will be rendered inside the 'tbody' tag inside of
   # the index template.
   render: () ->
-    @renderCollection(@template, @collection, 'tbody')
+    @collection.fetch(success: () => @renderCollection(@template, @collection, 'tbody'))
 
   # Default handler for the "detail" event. This event is intended to show a mini preview of an
   # item, showing more data than the general list but not the full information related to it. By
