@@ -8,4 +8,3 @@ class <%= model_namespace %> extends OpalExtensions.Model
 
   initialize: () ->
     super(arguments...)
-    @setupRelations()

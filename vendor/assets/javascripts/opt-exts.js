@@ -8,39 +8,43 @@
     Version: '0.0.1'
   };
 
-  String.prototype.trim = function() {
-    if (String.prototype.trim == null) {
+  if (String.prototype.trim == null) {
+    String.prototype.trim = function() {
       return this.replace(/^\s+|\s+$/g, "");
-    }
-  };
+    };
+  }
 
-  String.prototype.ltrim = function() {
-    if (String.prototype.ltrim == null) {
+  if (String.prototype.ltrim == null) {
+    String.prototype.ltrim = function() {
       return this.replace(/^\s+/g, "");
-    }
-  };
+    };
+  }
 
-  String.prototype.rtrim = function() {
-    if (String.prototype.rtrim == null) {
+  if (String.prototype.rtrim == null) {
+    String.prototype.rtrim = function() {
       return this.replace(/\s+$/g, "");
-    }
-  };
+    };
+  }
 
-  String.prototype.unslash = function() {
-    if (String.prototype.unslash == null) {
+  if (String.prototype.unslash == null) {
+    String.prototype.unslash = function() {
       return this.replace(/^\/+|\/+$/g, "");
-    }
-  };
+    };
+  }
 
-  String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-  };
+  if (String.prototype.capitalize == null) {
+    String.prototype.capitalize = function() {
+      return this.charAt(0).toUpperCase() + this.slice(1);
+    };
+  }
 
-  String.prototype.camelize = function() {
-    return _.map(this.split(/\s|_|-/), function(str) {
-      return str.capitalize();
-    }).join('');
-  };
+  if (String.prototype.camelize == null) {
+    String.prototype.camelize = function() {
+      return _.map(this.split(/\s|_|-/), function(str) {
+        return str.capitalize();
+      }).join('');
+    };
+  }
 
   OpalExtensions.Mixin = (function() {
 
@@ -269,7 +273,8 @@
     }
 
     Model.prototype.initialize = function() {
-      return Model.__super__.initialize.apply(this, arguments);
+      Model.__super__.initialize.apply(this, arguments);
+      return this.setupRelations();
     };
 
     Model.prototype.setupRelations = function() {
