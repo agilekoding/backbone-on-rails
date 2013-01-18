@@ -28,6 +28,7 @@ class <%= view_namespace %> extends OpalExtensions.View
 
   # The render method is responsible of calling and implementing any and all of the rendering logic. The default behavior is to render the show template and bind the fields to the @model instance.
   render: () ->
+    super(arguments...)
     @renderResource(@template, @model)
 
   # Default handler for the destroy event, it destroys the model and removes the view from the DOM.

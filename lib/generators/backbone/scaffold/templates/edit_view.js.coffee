@@ -26,6 +26,7 @@ class <%= view_namespace %> extends OpalExtensions.View
 
   # The render method is responsible of inserting a rendered template inside the @el property. This is a good place to bind your model with your view.
   render: () ->
+    super(arguments...)
     @renderResource(@template, @model)
 
   # This method handles the submit event on the form.

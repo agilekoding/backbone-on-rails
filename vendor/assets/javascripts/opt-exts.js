@@ -260,9 +260,26 @@
       return Collection.__super__.initialize.apply(this, arguments);
     };
 
+    Collection.prototype.paginator_core = {
+      dataType: 'json'
+    };
+
+    Collection.prototype.paginator_ui = {
+      firstPage: 1,
+      currentPage: 1,
+      perPage: 20,
+      totalPages: 10
+    };
+
+    Collection.prototype.server_api = {
+      per_page: function() {
+        return this.paginator_ui.perPage;
+      }
+    };
+
     return Collection;
 
-  })(Backbone.Collection);
+  })(Backbone.Paginator.requestPager);
 
   OpalExtensions.Model = (function(_super) {
 
