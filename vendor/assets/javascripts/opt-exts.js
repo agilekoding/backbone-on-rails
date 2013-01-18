@@ -279,7 +279,7 @@
 
     Model.prototype.setupRelations = function() {
       var _this = this;
-      if (this.Backbone.RelationalModel != null) {
+      if (Backbone.RelationalModel != null) {
         if (this.relations != null) {
           return _.each(this.relations, function(rel) {
             var collectionUrl;
