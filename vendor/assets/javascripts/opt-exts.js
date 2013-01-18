@@ -261,7 +261,8 @@
     };
 
     Collection.prototype.paginator_core = {
-      dataType: 'json'
+      dataType: 'json',
+      url: Collection.url
     };
 
     Collection.prototype.paginator_ui = {
@@ -272,9 +273,16 @@
     };
 
     Collection.prototype.server_api = {
+      page: function() {
+        return this.paginator_ui.currentPage;
+      },
       per_page: function() {
         return this.paginator_ui.perPage;
       }
+    };
+
+    Collection.prototype.parse = function(response) {
+      return response.results;
     };
 
     return Collection;
