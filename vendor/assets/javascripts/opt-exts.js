@@ -263,7 +263,7 @@
       return Collection.__super__.initialize.apply(this, arguments);
     };
 
-    if (Backbone.Paginator.requestPager != null) {
+    if ((Backbone.Paginator.requestPager != null) && baseCollection === Backbone.Paginator.requestPager) {
       Collection.prototype.paginator_core = {
         dataType: 'json',
         url: function() {
