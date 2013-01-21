@@ -249,7 +249,7 @@
 
   })(Backbone.Router);
 
-  baseCollection = Backbone.Collection;
+  baseCollection = Backbone.Paginator.requestPager || Backbone.Collection;
 
   OpalExtensions.Collection = (function(_super) {
 
