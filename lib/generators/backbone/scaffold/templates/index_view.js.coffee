@@ -11,6 +11,7 @@ class <%= view_namespace %> extends OpalExtensions.View
     super(arguments...)
     @elManagerFactory = new Backbone.CollectionBinder.ElManagerFactory(@lineItem(), @bindings())
     @collectionBinder = new Backbone.CollectionBinder(@elManagerFactory)
+    @listenTo(@collection, 'reset', @renderPagination)
 
   bindings: () ->
     id: [
@@ -42,7 +43,7 @@ class <%= view_namespace %> extends OpalExtensions.View
   render: () ->
     super(arguments...)
     @collection.fetch()
-    @renderCollection(@template, @collection, 'tbody')
+    @renderCollection(@template, @collection, 'tbody').renderPaginationOn('.pagination')
 
   # Default handler for the "detail" event. This event is intended to show a mini preview of an
   # item, showing more data than the general list but not the full information related to it. By
