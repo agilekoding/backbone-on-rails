@@ -393,6 +393,9 @@
         return response.results;
       };
       Collection.prototype.getPager = function() {
+        if (this.lastPage <= 1) {
+          return '';
+        }
         return this.getPageControl('first') + this.getPageControl('prev') + _.map(this.getDisplayPages(), this.getPageNumberLink, this).join('') + this.getPageControl('next') + this.getPageControl('last');
       };
     }
@@ -545,6 +548,14 @@
     View.prototype.renderCollection = function(template, collection, containerSelector) {
       this.$el.append(template());
       this.collectionBinder.bind(collection, this.$(containerSelector));
+      return this;
+    };
+
+    View.prototype.renderPagination = function(selector) {
+      if (selector == null) {
+        selector = '.pagination';
+      }
+      $(selector).html(this.collection.getPager());
       return this;
     };
 
