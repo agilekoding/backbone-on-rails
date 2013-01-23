@@ -106,15 +106,15 @@
 
     ViewManager.prototype.appMain = function(view, viewData) {
       this.clearWorkSpace();
-      return this.renderOn(this.getDesktop().layout().main, view, viewData);
+      return this.renderOn(this.getDesktop().layout().main(), view, viewData);
     };
 
     ViewManager.prototype.appDetail = function(view, viewData) {
-      return this.renderOn(this.getDesktop().layout().detail, view, viewData);
+      return this.renderOn(this.getDesktop().layout().detail(), view, viewData);
     };
 
     ViewManager.prototype.appForm = function(view, viewData) {
-      return this.renderOn(this.getDesktop().layout().forms.primary, view, viewData);
+      return this.renderOn(this.getDesktop().layout().forms.primary(), view, viewData);
     };
 
     ViewManager.prototype.renderOn = function(container, view, viewData) {
@@ -168,15 +168,25 @@
 
     Desktop.prototype.layouts = {
       "default": {
-        main: $("#app_container #main"),
-        detail: $("#app_container #detail"),
-        menu: $("#app_container #main_menu"),
+        main: function() {
+          return $("#app_container #main");
+        },
+        detail: function() {
+          return $("#app_container #detail");
+        },
+        menu: function() {
+          return $("#app_container #main_menu");
+        },
         forms: {
-          primary: $("#app_container #primary_form")
+          primary: function() {
+            return $("#app_container #primary_form");
+          }
         }
       },
       login: {
-        main: $("#login_container #main")
+        main: function() {
+          return $("#login_container #main");
+        }
       }
     };
 
@@ -261,6 +271,7 @@
     };
 
     if (Backbone.Paginator.requestPager != null) {
+      Collection.prototype.DefaultPagesInRange = 4;
       Collection.prototype.paginator_core = {
         dataType: 'json',
         url: function() {
@@ -271,18 +282,118 @@
         firstPage: 1,
         currentPage: 1,
         perPage: 20,
-        totalPages: 10
+        totalPages: 10,
+        pageLinks: {
+          defaultClass: 'btn',
+          disabledClass: 'disabled',
+          numberedPageOptions: {
+            "class": 'page-marker',
+            selectedClass: 'btn-primary',
+            unselectedClass: ''
+          },
+          first: {
+            label: '<<',
+            "class": 'first-page',
+            disabledClass: 'no-page',
+            isEnabled: function() {
+              return this.currentPage > this.firstPage;
+            }
+          },
+          prev: {
+            label: '<',
+            "class": 'prev-page',
+            disabledClass: 'no-page',
+            isEnabled: function() {
+              return this.currentPage > this.firstPage;
+            }
+          },
+          next: {
+            label: '>',
+            "class": 'next-page',
+            disabledClass: 'no-page',
+            isEnabled: function() {
+              return this.currentPage < this.lastPage;
+            }
+          },
+          last: {
+            label: '>>',
+            "class": 'last-page',
+            disabledClass: 'no-page',
+            isEnabled: function() {
+              return this.currentPage < this.lastPage;
+            }
+          }
+        }
       };
       Collection.prototype.server_api = {
         page: function() {
-          return this.paginator_ui.currentPage;
+          return this.currentPage;
         },
         per_page: function() {
-          return this.paginator_ui.perPage;
+          return this.perPage;
         }
       };
+      Collection.prototype.isCurrentPage = function(n) {
+        return this.currentPage === n;
+      };
+      Collection.prototype.getMinPage = function() {
+        this._minPage = this.currentPage - (this.pagesInRange || this.DefaultPagesInRange);
+        if (this._minPage < this.firstPage) {
+          this._minPage = this.firstPage;
+        }
+        return this._minPage;
+      };
+      Collection.prototype.getMaxPage = function() {
+        this._maxPage = this.currentPage + (this.pagesInRange || this.DefaultPagesInRange);
+        if (this._maxPage > this.lastPage) {
+          this._maxPage = this.lastPage;
+        }
+        return this._maxPage;
+      };
+      Collection.prototype.getDisplayPages = function() {
+        var _i, _ref, _ref1, _results;
+        return (function() {
+          _results = [];
+          for (var _i = _ref = this.getMinPage(), _ref1 = this.getMaxPage(); _ref <= _ref1 ? _i <= _ref1 : _i >= _ref1; _ref <= _ref1 ? _i++ : _i--){ _results.push(_i); }
+          return _results;
+        }).apply(this);
+      };
+      Collection.prototype.getPageNumberLink = function(n) {
+        return "<a href=\"#\" class=\"" + (this.getPageNumberLinkClass(n)) + "\" data-value=\"" + n + "\">" + n + "</a>";
+      };
+      Collection.prototype.getPageNumberLinkClass = function(n) {
+        return "" + this.pageLinks.defaultClass + " " + this.pageLinks.numberedPageOptions["class"] + " " + (this.getExtraClassFor(n));
+      };
+      Collection.prototype.getExtraClassFor = function(n) {
+        if (this.isCurrentPage(n)) {
+          return this.pageLinks.numberedPageOptions.selectedClass;
+        } else {
+          return this.pageLinks.numberedPageOptions.unselectedClass;
+        }
+      };
+      Collection.prototype.getPageControl = function(control) {
+        return "<a href=\"#\" class=\"" + (this.getPageControlClass(control)) + "\">" + this.pageLinks[control].label + "</a>";
+      };
+      Collection.prototype.getPageControlClass = function(control) {
+        if (this.pageLinks[control].isEnabled.apply(this)) {
+          return this.getEnabledPageControlClass(control);
+        } else {
+          return this.getDisabledPageControlClass(control);
+        }
+      };
+      Collection.prototype.getEnabledPageControlClass = function(control) {
+        return "" + this.pageLinks.defaultClass + " " + this.pageLinks[control]["class"];
+      };
+      Collection.prototype.getDisabledPageControlClass = function(control) {
+        return "" + this.pageLinks.defaultClass + " " + this.pageLinks.disabledClass + " " + this.pageLinks[control].disabledClass;
+      };
       Collection.prototype.parse = function(response) {
+        this.paginator_ui.count = response.count;
+        this.lastPage = this.availablePages = Math.ceil(response.count / this.perPage);
         return response.results;
+      };
+      Collection.prototype.getPager = function() {
+        return this.getPageControl('first') + this.getPageControl('prev') + _.map(this.getDisplayPages(), this.getPageNumberLink, this).join('') + this.getPageControl('next') + this.getPageControl('last');
       };
     }
 
@@ -362,7 +473,13 @@
     };
 
     View.prototype.events = {
-      "click .close-self": "close"
+      "click .close-self": "close",
+      "click .first-page": "goToFirst",
+      "click .prev-page": "requestPreviousPage",
+      "click .next-page": "requestNextPage",
+      "click .last-page": "goToLast",
+      "click .page-marker": "goToPage",
+      "click .no-page": "noPage"
     };
 
     View.prototype.create = function(options) {
@@ -429,6 +546,36 @@
       this.$el.append(template());
       this.collectionBinder.bind(collection, this.$(containerSelector));
       return this;
+    };
+
+    View.prototype.requestPreviousPage = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return this.collection.goTo(this.collection.paginator_ui.currentPage -= 1);
+    };
+
+    View.prototype.requestNextPage = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return this.collection.goTo(this.collection.paginator_ui.currentPage += 1);
+    };
+
+    View.prototype.goToPage = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return this.collection.goTo(this.collection.paginator_ui.currentPage = parseInt($(e.currentTarget).attr('data-value')));
+    };
+
+    View.prototype.goToFirst = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return this.collection.goTo(this.collection.paginator_ui.currentPage = this.collection.firstPage);
+    };
+
+    View.prototype.goToLast = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return this.collection.goTo(this.collection.paginator_ui.currentPage = this.collection.lastPage);
     };
 
     View.prototype.close = function(e) {
