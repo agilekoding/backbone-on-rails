@@ -578,6 +578,11 @@
       return this.collection.goTo(this.collection.paginator_ui.currentPage = this.collection.lastPage);
     };
 
+    View.prototype.noPage = function(e) {
+      e.preventDefault();
+      return e.stopPropagation();
+    };
+
     View.prototype.close = function(e) {
       e.preventDefault();
       this.remove();
