@@ -360,7 +360,7 @@
         }).apply(this);
       };
       Collection.prototype.getPageNumberLink = function(n) {
-        return "<li class=\"" + (this.getPageNumberLinkClass(n)) + "\"><a href=\"#\" data-value=\"" + n + "\">" + n + "</a></li>";
+        return "<li class=\"" + (this.getPageNumberLinkClass(n)) + "\" data-value=\"" + n + "\"><a href=\"#\">" + n + "</a></li>";
       };
       Collection.prototype.getPageNumberLinkClass = function(n) {
         return "" + this.pageLinks.defaultClass + " " + this.pageLinks.numberedPageOptions["class"] + " " + (this.getExtraClassFor(n));
