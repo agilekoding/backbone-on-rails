@@ -203,12 +203,12 @@
     Desktop.prototype.clear = function(target) {
       var workSpace;
       workSpace = target != null ? this.getLayout()[target] : this.getLayout();
-      if (workSpace.html != null) {
-        workSpace.html('');
+      if (workSpace().html != null) {
+        workSpace().html('');
       } else {
         _.each(_.values(workSpace), function(container) {
-          if (container.html != null) {
-            return container.html('');
+          if (container().html != null) {
+            return container().html('');
           }
         });
       }
