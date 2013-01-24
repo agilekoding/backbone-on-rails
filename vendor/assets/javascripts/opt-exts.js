@@ -210,7 +210,7 @@
         workSpace.html('');
       } else {
         _.each(_.values(workSpace), function(container) {
-          if (typeof workSpace === 'function') {
+          if (typeof container === 'function') {
             container = container();
           }
           if (container.html != null) {
