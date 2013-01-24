@@ -420,8 +420,7 @@
     }
 
     Model.prototype.initialize = function() {
-      Model.__super__.initialize.apply(this, arguments);
-      return this.setupRelations();
+      return Model.__super__.initialize.apply(this, arguments);
     };
 
     Model.prototype.setupRelations = function() {
