@@ -458,6 +458,8 @@
 
     View.include(OpalExtensions.ViewManager);
 
+    View.prototype.paginatorClass = 'paginator';
+
     View.prototype.initialize = function() {
       View.__super__.initialize.apply(this, arguments);
       _.bindAll(this);
@@ -551,11 +553,8 @@
       return this;
     };
 
-    View.prototype.renderPagination = function(selector) {
-      if (selector == null) {
-        selector = '.pagination';
-      }
-      $(selector).html(this.collection.getPager());
+    View.prototype.renderPagination = function() {
+      $("." + this.paginatorClass).html(collection.getPager());
       return this;
     };
 
