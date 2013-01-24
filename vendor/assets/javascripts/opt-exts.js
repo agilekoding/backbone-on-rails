@@ -459,7 +459,7 @@
 
     View.include(OpalExtensions.ViewManager);
 
-    View.prototype.paginatorSelector = '.paginator';
+    View.prototype.paginatorSelector = '.pagination';
 
     View.prototype.initialize = function() {
       View.__super__.initialize.apply(this, arguments);
