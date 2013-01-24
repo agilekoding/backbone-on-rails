@@ -284,11 +284,11 @@
         perPage: 20,
         totalPages: 10,
         pageLinks: {
-          defaultClass: 'btn',
+          defaultClass: '',
           disabledClass: 'disabled',
           numberedPageOptions: {
             "class": 'page-marker',
-            selectedClass: 'btn-primary',
+            selectedClass: 'disabled',
             unselectedClass: ''
           },
           first: {
@@ -359,7 +359,7 @@
         }).apply(this);
       };
       Collection.prototype.getPageNumberLink = function(n) {
-        return "<a href=\"#\" class=\"" + (this.getPageNumberLinkClass(n)) + "\" data-value=\"" + n + "\">" + n + "</a>";
+        return "<li class=\"" + (this.getPageNumberLinkClass(n)) + "\"><a href=\"#\" data-value=\"" + n + "\">" + n + "</a></li>";
       };
       Collection.prototype.getPageNumberLinkClass = function(n) {
         return "" + this.pageLinks.defaultClass + " " + this.pageLinks.numberedPageOptions["class"] + " " + (this.getExtraClassFor(n));
@@ -372,7 +372,7 @@
         }
       };
       Collection.prototype.getPageControl = function(control) {
-        return "<a href=\"#\" class=\"" + (this.getPageControlClass(control)) + "\">" + this.pageLinks[control].label + "</a>";
+        return "<li class=\"" + (this.getPageControlClass(control)) + "\"><a href=\"#\">" + this.pageLinks[control].label + "</a></li>";
       };
       Collection.prototype.getPageControlClass = function(control) {
         if (this.pageLinks[control].isEnabled.apply(this)) {
