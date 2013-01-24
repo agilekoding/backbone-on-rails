@@ -284,6 +284,7 @@
         perPage: 20,
         totalPages: 10,
         pageLinks: {
+          wrapperTag: 'ul',
           defaultClass: '',
           disabledClass: 'disabled',
           numberedPageOptions: {
@@ -396,7 +397,7 @@
         if (this.lastPage <= 1) {
           return '';
         }
-        return this.getPageControl('first') + this.getPageControl('prev') + _.map(this.getDisplayPages(), this.getPageNumberLink, this).join('') + this.getPageControl('next') + this.getPageControl('last');
+        return ("<" + this.pageLinks.wrapperTag + ">") + this.getPageControl('first') + this.getPageControl('prev') + _.map(this.getDisplayPages(), this.getPageNumberLink, this).join('') + this.getPageControl('next') + this.getPageControl('last') + ("</" + this.pageLinks.wrapperTag + ">");
       };
     }
 
