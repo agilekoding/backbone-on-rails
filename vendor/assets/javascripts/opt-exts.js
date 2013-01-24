@@ -554,7 +554,7 @@
     };
 
     View.prototype.renderPagination = function() {
-      $("." + this.paginatorClass).html(collection.getPager());
+      $("." + this.paginatorClass).html(this.collection.getPager());
       return this;
     };
 
