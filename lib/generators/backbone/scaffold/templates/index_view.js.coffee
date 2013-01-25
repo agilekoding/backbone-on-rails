@@ -50,13 +50,12 @@ class <%= view_namespace %> extends OpalExtensions.View
   # default it renders the ShowView but that behavior can be easily changed.
   detail: (e) ->
     e.stopPropagation()
-    id = $(e.currentTarget).closest('tr').prop('id')
-    @detailed = @collection.get(id)
+    @detailed = @collectionBinder.getManagerForEl($(e.target)[0]).getModel()
     @appDetail(<%= app_name %>.Views.<%= file_name.pluralize.capitalize %>ShowView, model: @detailed)
 
   # Default handler for the destroy event
   destroy: (e) ->
     e.preventDefault()
     e.stopPropagation()
-    id = $(e.currentTarget).closest('tr').prop('id')
-    super(id)
+    target = @collectionBinder.getManagerForEl($(e.target)[0]).getModel()
+    super(target.get('id'))
