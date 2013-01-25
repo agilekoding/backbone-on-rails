@@ -420,7 +420,12 @@
     }
 
     Model.prototype.initialize = function() {
-      return Model.__super__.initialize.apply(this, arguments);
+      var _this = this;
+      Model.__super__.initialize.apply(this, arguments);
+      this.on('change:id', function() {
+        return _this.setupRelations.apply(_this);
+      });
+      return this.setupRelations();
     };
 
     Model.prototype.setupRelations = function() {
@@ -429,7 +434,7 @@
         if (this.relations != null) {
           return _.each(this.relations, function(rel) {
             var collectionUrl;
-            collectionUrl = _this.get(rel.key).url.unslash();
+            collectionUrl = _.last(_this.get(rel.key).url.unslash().split('/'));
             return _this.get(rel.key).url = "" + (_this.urlRoot.unslash()) + "/" + (_this.get('id')) + "/" + collectionUrl;
           });
         }
