@@ -476,13 +476,11 @@
         originalJSONincludings = [];
         _.each(this.relations, function(rel) {
           if (_this.get(rel.key).length === 0) {
-            rel.includeInJSON = false;
-          }
-          if (_this.get(rel.key).length === 0) {
-            return originalJSONincludings.push({
+            originalJSONincludings.push({
               rel: rel,
               originalValue: rel.includeInJSON
             });
+            return rel.includeInJSON = false;
           }
         });
         Model.__super__.save.apply(this, arguments);
