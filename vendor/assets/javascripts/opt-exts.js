@@ -419,12 +419,22 @@
       return Model.__super__.constructor.apply(this, arguments);
     }
 
+    Model.appNamespace = function() {
+      if (typeof Opal !== "undefined" && Opal !== null) {
+        return "" + Opal.AppNamespace + ".";
+      } else {
+        return '';
+      }
+    };
+
     Model.prototype.initialize = function() {
       var _this = this;
       Model.__super__.initialize.apply(this, arguments);
-      this.on('change:id', function() {
-        return _this.setupRelations.apply(_this);
-      });
+      if (Backbone.RelationalModel != null) {
+        this.on('change:id', function() {
+          return _this.setupRelations.apply(_this);
+        });
+      }
       return this.setupRelations();
     };
 
@@ -442,6 +452,24 @@
     };
 
     if (Backbone.RelationalModel != null) {
+      Model.hasMany = function(key, options) {
+        if (options == null) {
+          options = {};
+        }
+        if (!key) {
+          throw new Error('HasMany relations require a key');
+        }
+        this.prototype.relations = this.prototype.relations || [];
+        _.extend(options, {
+          type: Backbone.HasMany,
+          key: key
+        });
+        _.defaults(options, {
+          relatedModel: "" + (this.appNamespace()) + "Models." + (_.singularize(key).capitalize()),
+          collectionType: "" + (this.appNamespace()) + "Collections." + (_.pluralize(key).capitalize()) + "Collection"
+        });
+        return this.prototype.relations.push(options);
+      };
       Model.prototype.save = function() {
         var _this = this;
         _.each(this.relations, function(rel) {
