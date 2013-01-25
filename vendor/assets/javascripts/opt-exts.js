@@ -471,22 +471,15 @@
         return this.prototype.relations.push(options);
       };
       Model.prototype.save = function() {
-        var originalJSONincludings,
-          _this = this;
-        originalJSONincludings = [];
+        var _this = this;
+        this.originalRelations = _.clone(this.relations);
         _.each(this.relations, function(rel) {
           if (_this.get(rel.key).length === 0) {
-            originalJSONincludings.push({
-              rel: rel,
-              originalValue: rel.includeInJSON
-            });
             return rel.includeInJSON = false;
           }
         });
         Model.__super__.save.apply(this, arguments);
-        return _.each(originalJSONincludings, function(options) {
-          return options.rel = options.originalValue;
-        });
+        return this.relations = this.originalRelations;
       };
     }
 
