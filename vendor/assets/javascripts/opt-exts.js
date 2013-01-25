@@ -471,13 +471,24 @@
         return this.prototype.relations.push(options);
       };
       Model.prototype.save = function() {
-        var _this = this;
+        var originalJSONincludings,
+          _this = this;
+        originalJSONincludings = [];
         _.each(this.relations, function(rel) {
           if (_this.get(rel.key).length === 0) {
-            return rel.includeInJSON = false;
+            rel.includeInJSON = false;
+          }
+          if (_this.get(rel.key).length === 0) {
+            return originalJSONincludings.push({
+              rel: rel,
+              originalValue: rel.includeInJSON
+            });
           }
         });
-        return Model.__super__.save.apply(this, arguments);
+        Model.__super__.save.apply(this, arguments);
+        return _.each(originalJSONincludings, function(options) {
+          return options.rel = options.originalValue;
+        });
       };
     }
 
