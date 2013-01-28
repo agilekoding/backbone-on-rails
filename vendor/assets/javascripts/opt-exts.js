@@ -472,7 +472,9 @@
       };
       Model.prototype.save = function() {
         var _this = this;
-        this.originalRelations = _.clone(this.relations);
+        this.originalRelations = _(this.relations).map(function(rel) {
+          return _(rel).clone();
+        });
         _.each(this.relations, function(rel) {
           if (_this.get(rel.key).length === 0) {
             return rel.includeInJSON = false;
