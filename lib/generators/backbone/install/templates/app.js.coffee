@@ -1,4 +1,4 @@
-window.OpalExtensions =
+window.Opal =
   AppNamespace: '<%= app_name %>'
 
 window.<%= app_name %> =
