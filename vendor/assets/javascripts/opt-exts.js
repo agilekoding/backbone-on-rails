@@ -596,7 +596,13 @@
       "click .next-page": "requestNextPage",
       "click .last-page": "goToLast",
       "click .page-marker": "goToPage",
-      "click .no-page": "noPage"
+      "click .no-page": "noPage",
+      "click a.show_detail": function(e) {
+        return e.stopPropagation();
+      },
+      "click a.edit": function(e) {
+        return e.stopPropagation();
+      }
     };
 
     View.prototype.create = function(options) {
