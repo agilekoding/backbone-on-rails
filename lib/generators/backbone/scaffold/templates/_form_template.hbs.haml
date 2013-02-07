@@ -1,7 +1,7 @@
-= form_for <%= file_name.camelize %>.new, html: {id: "<%= file_name.pluralize %>_form"} do |f|
+%form#<%= file_name.pluralize %>
 <% attributes.each do |a| -%>
   .row-fluid
-    = f.label :<%= a.name %>
+    = label_tag :<%= a.name %>
     = text_field_tag :<%= a.name %>, '', :class => 'span12'
 <% end -%>
   .form-controls.row-fluid.btn-group
