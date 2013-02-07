@@ -1,4 +1,4 @@
-class <%= view_namespace %> extends OpalExtensions.View
+class <%= view_namespace %> extends Sharkbone.View
 
   # This function retrieves a template from a namespaced collection, the default format favor
   # the use of templating engines like JST or Handlebars but you can replace this with any other
@@ -9,9 +9,7 @@ class <%= view_namespace %> extends OpalExtensions.View
 
   initialize: () ->
     super(arguments...)
-    @elManagerFactory = new Backbone.CollectionBinder.ElManagerFactory(@lineItem(), @bindings())
-    @collectionBinder = new Backbone.CollectionBinder(@elManagerFactory)
-    @listenTo(@collection, 'reset', @renderPagination)
+    @collectionBinder = @buildCollectionBinder(@lineItem, @bindings)
 
   bindings: () ->
     id: [
@@ -50,12 +48,12 @@ class <%= view_namespace %> extends OpalExtensions.View
   # default it renders the ShowView but that behavior can be easily changed.
   detail: (e) ->
     e.stopPropagation()
-    @detailed = @collectionBinder.getManagerForEl($(e.target)[0]).getModel()
-    @appDetail(<%= app_name %>.Views.<%= file_name.pluralize.capitalize %>ShowView, model: @detailed)
+    @detailed = @collectionBinder.getManagerForEl(e.target).getModel()
+    @appDetail(<%= app_namespace %>.Views.<%= file_name.pluralize.capitalize %>Show, model: @detailed)
 
   # Default handler for the destroy event
   destroy: (e) ->
     e.preventDefault()
     e.stopPropagation()
-    target = @collectionBinder.getManagerForEl($(e.target)[0]).getModel()
+    target = @collectionBinder.getManagerForEl(e.target).getModel()
     super(target.get('id'))

@@ -1,27 +1,18 @@
-class <%= router_namespace %> extends OpalExtensions.Router
+class <%= router_namespace %> extends Sharkbone.Router
 
-  routes:
-    "<%= file_name.pluralize %>/index" : "index"
-    "<%= file_name.pluralize %>" : "index"
-    "<%= file_name.pluralize %>/new" : "newModel"
-    "<%= file_name.pluralize %>/:id/edit" : "edit"
-    "<%= file_name.pluralize %>/:id" : "show"
+  @resources()
 
   initialize: () ->
     super(arguments...)
-    @collection = new <%= collection_namespace %>()
-
-  loadData: () ->
-    @collection.fetch()
 
   index: () ->
-    @appMain(<%= app_name %>.Views.<%= file_name.pluralize.camelize %>IndexView, {collection: @collection})
+    @renderOn(@getDesktop().layout().main(), <%= custom_view_namespace 'index' %>, {collection: @collection})
 
   newModel: () ->
-    @appMain(<%= app_name %>.Views.<%= file_name.pluralize.camelize %>NewView, {collection: @collection, model: new @collection.model()})
+    @renderOn(@getDesktop().layout().main(), <%= custom_view_namespace 'new' %>, {collection: @collection, model: new @collection.model()})
 
   edit: (id) ->
-    @appMain(<%= app_name %>.Views.<%= file_name.pluralize.camelize %>EditView, {collection: @collection, model: @getResource(id)})
+    @renderOn(@getDesktop().layout().main(), <%= custom_view_namespace 'edit' %>, {collection: @collection, model: @getResource(id)})
 
   show: (id) ->
-    @appMain(<%= app_name %>.Views.<%= file_name.pluralize.camelize %>ShowView, {model: @getResource(id)})
+    @renderOn(@getDesktop().layout().main(), <%= custom_view_namespace 'show' %>, {model: @getResource(id)})

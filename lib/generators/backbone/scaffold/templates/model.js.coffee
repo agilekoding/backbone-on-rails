@@ -1,4 +1,4 @@
-class <%= model_namespace %> extends OpalExtensions.Model
+class <%= model_namespace %> extends Sharkbone.Model
   urlRoot: '<%= plural_name %>'
 
   defaults:

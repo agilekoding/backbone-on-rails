@@ -1,11 +1,10 @@
-class <%= view_namespace %> extends OpalExtensions.View
+class <%= view_namespace %> extends Sharkbone.View
 
   # This function retrieves a template from a namespaced collection, the default format favor the use of templating engines like JST or Handlebars but you can replace this with any other implementation.
   template: (context) -> HandlebarsTemplates['<%= file_name.pluralize %>/show'](context)
 
   initialize: () ->
     super(arguments...)
-    @modelBinder = new Backbone.ModelBinder()
 
   bindings: () ->
     id: [

@@ -4,8 +4,41 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  window.OpalExtensions = {
-    Version: '0.0.1'
+  window.Sharkbone = {
+    Version: '0.0.2',
+    App: {
+      Models: {},
+      Collections: {},
+      Views: {},
+      Routers: {},
+      activeRouters: [],
+      options: {
+        pushState: false
+      },
+      initialize: function() {
+        this.initializeRouters();
+        this.setupBackboneRelational();
+        return Backbone.history.start();
+      },
+      initializeRouters: function(opts) {
+        if (opts == null) {
+          opts = this.options;
+        }
+        return this.activeRouters = _(this.Routers).map(function(router) {
+          return new router(opts);
+        });
+      },
+      setupBackboneRelational: function() {
+        if (Backbone.RelationalModel != null) {
+          _(this.Models).each(function(model) {
+            return typeof model.setup === "function" ? model.setup() : void 0;
+          });
+        }
+        if (Backbone.RelationalModel != null) {
+          return _(this.Models).invoke('setup');
+        }
+      }
+    }
   };
 
   if (String.prototype.trim == null) {
@@ -46,7 +79,13 @@
     };
   }
 
-  OpalExtensions.Mixin = (function() {
+  if (String.prototype.underscored == null) {
+    String.prototype.underscored = function() {
+      return this.replace(/([a-z\d])([A-Z]+)/g, '$1_$2').replace(/[-\s]+/g, '_').toLowerCase();
+    };
+  }
+
+  Sharkbone.Mixin = (function() {
 
     function Mixin() {}
 
@@ -92,12 +131,12 @@
 
   })();
 
-  OpalExtensions.ViewManager = (function() {
+  Sharkbone.ViewManager = (function() {
 
     function ViewManager() {}
 
     ViewManager.prototype.getDesktop = function() {
-      return this.desktop || (this.desktop = new OpalExtensions.Desktop());
+      return this.desktop || (this.desktop = new Sharkbone.Desktop());
     };
 
     ViewManager.prototype.clearWorkSpace = function(workSpace) {
@@ -160,11 +199,11 @@
 
   })();
 
-  OpalExtensions.Desktop = (function() {
+  Sharkbone.Desktop = (function() {
 
     function Desktop() {}
 
-    _.extend(Desktop, OpalExtensions.Mixin);
+    _.extend(Desktop, Sharkbone.Mixin);
 
     Desktop.prototype.layouts = {
       "default": {
@@ -232,7 +271,7 @@
 
   })();
 
-  OpalExtensions.Router = (function(_super) {
+  Sharkbone.Router = (function(_super) {
 
     __extends(Router, _super);
 
@@ -240,15 +279,39 @@
       return Router.__super__.constructor.apply(this, arguments);
     }
 
-    _.extend(Router, OpalExtensions.Mixin);
+    _.extend(Router, Sharkbone.Mixin);
 
-    Router.include(OpalExtensions.ViewManager);
+    Router.include(Sharkbone.ViewManager);
 
-    Router.prototype.initialize = function() {
-      return Router.__super__.initialize.apply(this, arguments);
+    Router.defaultCollectionName = function() {
+      return this.name.replace(/router|controller/gi, '');
     };
 
-    Router.prototype.loadData = function() {
+    Router.collectionClass = function() {
+      return (typeof this.defaultCollectionName === "function" ? this.defaultCollectionName() : void 0) || this.defaultCollectionName;
+    };
+
+    Router.collectionName = function() {
+      return ((typeof this.collectionClass === "function" ? this.collectionClass() : void 0) || this.collectionClass).underscored();
+    };
+
+    Router.resources = function(collectionName) {
+      var _base;
+      collectionName || (collectionName = (typeof this.collectionName === "function" ? this.collectionName() : void 0) || this.collectionName);
+      (_base = this.prototype).routes || (_base.routes = {});
+      this.prototype.routes["" + collectionName + "/index"] = 'index';
+      this.prototype.routes["" + collectionName] = 'index';
+      this.prototype.routes["" + collectionName + "/new"] = 'newModel';
+      this.prototype.routes["" + collectionName + "/:id/edit"] = 'edit';
+      return this.prototype.routes["" + collectionName + "/:id"] = 'show';
+    };
+
+    Router.prototype.initialize = function() {
+      Router.__super__.initialize.apply(this, arguments);
+      return this.collection = new Sharkbone.App.Collections[this.constructor.collectionClass()]();
+    };
+
+    Router.prototype.loadDefaultData = function() {
       return this.collection.fetch();
     };
 
@@ -264,7 +327,7 @@
 
   })(Backbone.Router);
 
-  OpalExtensions.Collection = (function(_super) {
+  Sharkbone.Collection = (function(_super) {
 
     __extends(Collection, _super);
 
@@ -411,7 +474,7 @@
 
   })(Backbone.Paginator.requestPager || Backbone.Collection);
 
-  OpalExtensions.Model = (function(_super) {
+  Sharkbone.Model = (function(_super) {
 
     __extends(Model, _super);
 
@@ -420,11 +483,7 @@
     }
 
     Model.appNamespace = function() {
-      if (typeof Opal !== "undefined" && Opal !== null) {
-        return "" + Opal.AppNamespace + ".";
-      } else {
-        return '';
-      }
+      return 'Sharkbone.App.';
     };
 
     Model.prototype.initialize = function() {
@@ -489,7 +548,7 @@
 
   })(Backbone.RelationalModel || Backbone.Model);
 
-  OpalExtensions.View = (function(_super) {
+  Sharkbone.View = (function(_super) {
 
     __extends(View, _super);
 
@@ -497,9 +556,9 @@
       return View.__super__.constructor.apply(this, arguments);
     }
 
-    _.extend(View, OpalExtensions.Mixin);
+    _.extend(View, Sharkbone.Mixin);
 
-    View.include(OpalExtensions.ViewManager);
+    View.include(Sharkbone.ViewManager);
 
     View.prototype.paginatorSelector = '.pagination';
 
@@ -507,13 +566,23 @@
       View.__super__.initialize.apply(this, arguments);
       _.bindAll(this);
       this._afterCreate = this._afterUpdate = this._afterDestroy = [];
-      return this.initializeDefaultCallbacks();
+      this.initializeDefaultCallbacks();
+      if (this.collection != null) {
+        this.listenTo(this.collection, 'reset', this.renderPagination);
+      }
+      if (Backbone.ModelBinder != null) {
+        return this.modelBinder = new Backbone.ModelBinder();
+      }
     };
 
     View.prototype.initializeDefaultCallbacks = function() {
       this.afterCreate(this.goToShow);
       this.afterUpdate(this.goToShow);
       return this.afterDestroy(this.goToIndex);
+    };
+
+    View.prototype.buildCollectionBinder = function(childTemplate, bindings) {
+      return new Backbone.CollectionBinder(new Backbone.CollectionBinder.ElManagerFactory(childTemplate(), bindings()));
     };
 
     View.prototype.bindings = function() {
@@ -531,18 +600,27 @@
     };
 
     View.prototype.create = function(options) {
+      if (typeof options.preventDefault === "function") {
+        options.preventDefault();
+      }
       this.collection.create(this.model);
       this.remove();
       return this.callbacksFor(this._afterCreate, [this.model]);
     };
 
     View.prototype.update = function(options) {
+      if (typeof options.preventDefault === "function") {
+        options.preventDefault();
+      }
       this.model.save();
       this.remove();
       return this.callbacksFor(this._afterUpdate, [this.model]);
     };
 
     View.prototype.destroy = function(id, options) {
+      if (typeof id.preventDefault === "function") {
+        id.preventDefault();
+      }
       if ((id != null) && (this.collection != null)) {
         this.collection.get(id).destroy();
         this.collection.remove(this.collection.get(id));

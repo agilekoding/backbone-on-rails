@@ -50,26 +50,30 @@ module Backbone
         "#{filename.pluralize}_#{template_name}_template#{@tmpl}"
       end
 
+      def app_namespace
+        'Sharkbone.App'
+      end
+
       def model_namespace
-        [app_name, "Models", file_name.singularize.camelize].join(".")
+        [app_namespace, "Models", file_name.singularize.camelize].join(".")
       end
 
       def collection_namespace
-        [app_name, "Collections", "#{file_name.pluralize}_collection".camelize].join(".")
+        [app_namespace, "Collections", "#{file_name.pluralize}".camelize].join(".")
       end
 
       def router_namespace
-        [app_name, "Routers", "#{file_name.pluralize}_router".camelize].join(".")
+        [app_namespace, "Routers", "#{file_name.pluralize}_router".camelize].join(".")
       end
 
       def view_namespace
         view_name = @current_view
         view_name = view_name.camelize
-        [app_name, "Views", "#{file_name.pluralize.camelize}#{view_name}View"].join(".")
+        [app_namespace, "Views", "#{file_name.pluralize.camelize}#{view_name}"].join(".")
       end
 
       def custom_view_namespace view_name
-        [app_name, "Views", "#{file_name.pluralize.camelize}#{view_name.camelize}View"].join(".")
+        [app_namespace, "Views", "#{file_name.pluralize.camelize}#{view_name.camelize}"].join(".")
       end
 
       def template_namespace

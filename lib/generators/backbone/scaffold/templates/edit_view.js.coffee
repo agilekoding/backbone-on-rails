@@ -1,4 +1,4 @@
-class <%= view_namespace %> extends OpalExtensions.View
+class <%= view_namespace %> extends Sharkbone.View
 
   # This function retrieves a template from a namespaced collection, the default format favor the use of templating engines like JST or Handlebars but you can replace this with any other implementation.
   template: (context) -> <%= templates_namespace %>['<%= template_namespace %>'](context)
@@ -6,7 +6,6 @@ class <%= view_namespace %> extends OpalExtensions.View
   # Place all the view's initialization logic here.
   initialize: () ->
     super(arguments...)
-    @modelBinder = new Backbone.ModelBinder()
 
   bindings: () ->
     id: '[name=id]'
@@ -21,15 +20,10 @@ class <%= view_namespace %> extends OpalExtensions.View
       # "<event> <cssSelector>" : "<methodName>"
       #
       # The method gets an event argument, from which the currentTarget is accessible
-      "submit #<%= file_name.pluralize %>_form" : "save"
+      "submit #<%= file_name.pluralize %>_form" : "update"
     })
 
   # The render method is responsible of inserting a rendered template inside the @el property. This is a good place to bind your model with your view.
   render: () ->
     super(arguments...)
     @renderResource(@template, @model)
-
-  # This method handles the submit event on the form.
-  save: (e) ->
-    e.preventDefault()
-    @update()
