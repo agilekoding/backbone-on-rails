@@ -29,8 +29,3 @@ class <%= view_namespace %> extends Sharkbone.View
   render: () ->
     super(arguments...)
     @renderResource(@template, @model)
-
-  # Default handler for the destroy event, it destroys the model and removes the view from the DOM.
-  destroy: (e) ->
-    e.preventDefault()
-    super()
