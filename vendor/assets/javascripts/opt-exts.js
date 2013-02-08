@@ -575,19 +575,22 @@
     View.prototype.initializeDefaultCallbacks = function() {
       this.afterCreate(this.goToShow);
       this.afterUpdate(this.goToShow);
-      return this.afterDestroy(this.goToIndex);
+      this.afterDestroy(this.goToIndex);
+      return this;
     };
 
     View.prototype.initializePaginatedCollection = function() {
-      if ((this.collection != null) && (this.collection.getPager != null)) {
-        return this.listenTo(this.collection, 'reset', this.renderPagination);
+      if ((this.collection != null) && _.isFunction(this.collection.getPager)) {
+        this.listenTo(this.collection, 'reset', this.renderPagination);
       }
+      return this;
     };
 
     View.prototype.initializeModelBinding = function() {
       if (Backbone.ModelBinder != null) {
-        return this.modelBinder = new Backbone.ModelBinder();
+        this.modelBinder = new Backbone.ModelBinder();
       }
+      return this;
     };
 
     View.prototype.buildCollectionBinder = function(childTemplate, bindings) {
