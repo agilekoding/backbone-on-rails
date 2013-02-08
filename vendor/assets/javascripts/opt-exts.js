@@ -567,18 +567,27 @@
       _.bindAll(this);
       this._afterCreate = this._afterUpdate = this._afterDestroy = [];
       this.initializeDefaultCallbacks();
-      if (this.collection != null) {
-        this.listenTo(this.collection, 'reset', this.renderPagination);
-      }
-      if (Backbone.ModelBinder != null) {
-        return this.modelBinder = new Backbone.ModelBinder();
-      }
+      this.initializePaginatedCollection();
+      this.initializeModelBinding();
+      return this;
     };
 
     View.prototype.initializeDefaultCallbacks = function() {
       this.afterCreate(this.goToShow);
       this.afterUpdate(this.goToShow);
       return this.afterDestroy(this.goToIndex);
+    };
+
+    View.prototype.initializePaginatedCollection = function() {
+      if ((this.collection != null) && (this.collection.getPager != null)) {
+        return this.listenTo(this.collection, 'reset', this.renderPagination);
+      }
+    };
+
+    View.prototype.initializeModelBinding = function() {
+      if (Backbone.ModelBinder != null) {
+        return this.modelBinder = new Backbone.ModelBinder();
+      }
     };
 
     View.prototype.buildCollectionBinder = function(childTemplate, bindings) {
