@@ -30,11 +30,6 @@
       },
       setupBackboneRelational: function() {
         if (Backbone.RelationalModel != null) {
-          _(this.Models).each(function(model) {
-            return typeof model.setup === "function" ? model.setup() : void 0;
-          });
-        }
-        if (Backbone.RelationalModel != null) {
           return _(this.Models).invoke('setup');
         }
       }
@@ -525,7 +520,7 @@
         });
         _.defaults(options, {
           relatedModel: "" + (this.appNamespace()) + "Models." + (_.singularize(key).capitalize()),
-          collectionType: "" + (this.appNamespace()) + "Collections." + (_.pluralize(key).capitalize()) + "Collection"
+          collectionType: "" + (this.appNamespace()) + "Collections." + (_.pluralize(key).capitalize())
         });
         return this.prototype.relations.push(options);
       };
