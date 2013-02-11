@@ -33,7 +33,7 @@
       initialize: function() {
         var _this = this;
         _(this.Initializers).each(function(init) {
-          return typeof init === "function" ? init(_this.options) : void 0;
+          return init.call(_this, _this.options);
         });
         return Backbone.history.start();
       }
