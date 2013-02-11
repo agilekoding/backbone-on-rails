@@ -11,27 +11,31 @@
       Collections: {},
       Views: {},
       Routers: {},
+      Initializers: {
+        initializeRouters: function(opts) {
+          if (opts == null) {
+            opts = this.options;
+          }
+          return this.activeRouters = _(this.Routers).map(function(router) {
+            return new router(opts);
+          });
+        },
+        setupBackboneRelational: function() {
+          if (Backbone.RelationalModel != null) {
+            return _(this.Models).invoke('setup');
+          }
+        }
+      },
       activeRouters: [],
       options: {
         pushState: false
       },
       initialize: function() {
-        this.initializeRouters();
-        this.setupBackboneRelational();
-        return Backbone.history.start();
-      },
-      initializeRouters: function(opts) {
-        if (opts == null) {
-          opts = this.options;
-        }
-        return this.activeRouters = _(this.Routers).map(function(router) {
-          return new router(opts);
+        var _this = this;
+        _(this.Initializers).each(function(init) {
+          return typeof init === "function" ? init(_this.options) : void 0;
         });
-      },
-      setupBackboneRelational: function() {
-        if (Backbone.RelationalModel != null) {
-          return _(this.Models).invoke('setup');
-        }
+        return Backbone.history.start();
       }
     }
   };
