@@ -84,6 +84,23 @@
     };
   }
 
+  if (String.prototype.army == null) {
+    String.prototype.army = function(n) {
+      var r;
+      r = [];
+      while (r.length < n) {
+        r.push(this);
+      }
+      return r.join("");
+    };
+  }
+
+  if (String.prototype.leftFill == null) {
+    String.prototype.leftFill = function(string, resultLength) {
+      return (string.army(resultLength) + this).slice(resultLength * (-1));
+    };
+  }
+
   Sharkbone.Mixin = (function() {
 
     function Mixin() {}
