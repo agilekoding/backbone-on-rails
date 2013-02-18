@@ -6,6 +6,7 @@
 
   window.Sharkbone = {
     Version: '0.0.2',
+    Config: {},
     App: {
       Models: {},
       Collections: {},
@@ -546,19 +547,35 @@
         });
         return this.prototype.relations.push(options);
       };
-      Model.prototype.save = function() {
-        var _this = this;
-        this.originalRelations = _(this.relations).map(function(rel) {
-          return _(rel).clone();
+      Model.hasOne = function(key, options) {
+        if (options == null) {
+          options = {};
+        }
+        if (!key) {
+          throw new Error('HasOne relations require a key');
+        }
+        this.prototype.relations = this.prototype.relations || [];
+        _.extend(options, {
+          type: Backbone.HasOne,
+          key: key
         });
-        _.each(this.relations, function(rel) {
-          if (_this.get(rel.key).length === 0) {
-            return rel.includeInJSON = false;
-          }
+        _.defaults(options, {
+          relatedModel: "" + (this.appNamespace()) + "Models." + (_.singularize(key).capitalize())
         });
-        Model.__super__.save.apply(this, arguments);
-        return this.relations = this.originalRelations;
+        return this.prototype.relations.push(options);
       };
+      if (Sharkbone.Config.ActiveRecord != null) {
+        Model.prototype.toJSON = function() {
+          var attrs,
+            _this = this;
+          attrs = _(this.attributes).clone();
+          _(this.relations).each(function(relation) {
+            attrs["" + relation.key + "_attributes"] = _(attrs[relation.key]).clone();
+            return delete attrs[relation.key];
+          });
+          return attrs;
+        };
+      }
     }
 
     return Model;
