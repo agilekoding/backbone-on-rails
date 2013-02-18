@@ -323,8 +323,9 @@
     };
 
     Router.prototype.initialize = function() {
+      var _base, _name;
       Router.__super__.initialize.apply(this, arguments);
-      return this.collection = new Sharkbone.App.Collections[this.constructor.collectionClass()]();
+      return this.collection = typeof (_base = Sharkbone.App.Collections)[_name = this.constructor.collectionClass()] === "function" ? new _base[_name]() : void 0;
     };
 
     Router.prototype.loadDefaultData = function() {
