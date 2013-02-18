@@ -562,20 +562,24 @@
         _.defaults(options, {
           relatedModel: "" + (this.appNamespace()) + "Models." + (_.singularize(key).capitalize())
         });
-        return this.prototype.relations.push(options);
-      };
-      if (Sharkbone.Config.ActiveRecord != null) {
-        Model.prototype.toJSON = function() {
-          var attrs,
-            _this = this;
-          attrs = _(this.attributes).clone();
-          _(this.relations).each(function(relation) {
-            attrs["" + relation.key + "_attributes"] = _(attrs[relation.key]).clone();
-            return delete attrs[relation.key];
-          });
-          return attrs;
+        this.prototype.relations.push(options);
+        return {
+          toJSON: function() {
+            var attrs,
+              _this = this;
+            if ((Sharkbone.Config.ActiveRecord != null) && Sharkbone.Config.ActiveRecord) {
+              attrs = _(this.attributes).clone();
+              _(this.relations).each(function(relation) {
+                attrs["" + relation.key + "_attributes"] = _(attrs[relation.key]).clone();
+                return delete attrs[relation.key];
+              });
+              return attrs;
+            } else {
+              return toJSON.__super__.constructor.apply(this, arguments);
+            }
+          }
         };
-      }
+      };
     }
 
     return Model;
