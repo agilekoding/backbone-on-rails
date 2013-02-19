@@ -609,7 +609,9 @@
     };
 
     View.prototype.initializeDefaultCallbacks = function() {
+      this.afterCreate(this.remove);
       this.afterCreate(this.goToShow);
+      this.afterUpdate(this.remove);
       this.afterUpdate(this.goToShow);
       this.afterDestroy(this.goToIndex);
       return this;
@@ -658,7 +660,6 @@
         options.preventDefault();
       }
       this.collection.create(this.model);
-      this.remove();
       return this.callbacksFor(this._afterCreate, [this.model]);
     };
 
@@ -667,7 +668,6 @@
         options.preventDefault();
       }
       this.model.save();
-      this.remove();
       return this.callbacksFor(this._afterUpdate, [this.model]);
     };
 
