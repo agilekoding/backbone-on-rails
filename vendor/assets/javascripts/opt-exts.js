@@ -512,23 +512,21 @@
           return _this.setupRelations.apply(_this);
         });
       }
-      return this.setupRelations();
-    };
-
-    Model.prototype.setupRelations = function() {
-      var _this = this;
-      if (Backbone.RelationalModel != null) {
-        if (this.relations != null) {
-          return _.each(this.relations, function(rel) {
-            var collectionUrl;
-            collectionUrl = _.last(_this.get(rel.key).url.unslash().split('/'));
-            return _this.get(rel.key).url = "" + (_this.urlRoot.unslash()) + "/" + (_this.get('id')) + "/" + collectionUrl;
-          });
-        }
+      if (typeof this.setupRelations === "function") {
+        this.setupRelations();
       }
+      return typeof this.fetchCollections === "function" ? this.fetchCollections() : void 0;
     };
 
     if (Backbone.RelationalModel != null) {
+      Model.prototype.setupRelations = function() {
+        var _this = this;
+        if (this.relations != null) {
+          return _.each(this.relations, function(rel) {
+            return _this.get(rel.key).url = "" + (_this.urlRoot.unslash()) + "/" + (_this.get('id')) + "/" + rel.key;
+          });
+        }
+      };
       Model.hasMany = function(key, options) {
         if (options == null) {
           options = {};
@@ -564,20 +562,34 @@
         });
         return this.prototype.relations.push(options);
       };
-      Model.prototype.toJSON = function() {
-        var attrs,
-          _this = this;
-        if ((Sharkbone.Config.ActiveRecord != null) && Sharkbone.Config.ActiveRecord) {
+      Model.prototype.fetchCollections = function() {
+        var _this = this;
+        return _(this.relations).chain().filter(function(rel) {
+          return rel.type === Backbone.HasMany;
+        }).pluck('key').each(function(key) {
+          return _this.get(key).fetch();
+        }).value();
+      };
+      Model.prototype.createDotSyntaxCollectionGetters = function() {
+        var _this = this;
+        return _(this.relations).chain().pluck('key').each(function(key) {
+          return _this[key] = function() {
+            return this.get(key);
+          };
+        });
+      };
+      if ((Sharkbone.Config.ActiveRecord != null) && Sharkbone.Config.ActiveRecord) {
+        Model.prototype.toJSON = function() {
+          var attrs,
+            _this = this;
           attrs = _(this.attributes).clone();
           _(this.relations).each(function(relation) {
             attrs["" + relation.key + "_attributes"] = _(attrs[relation.key]).clone();
             return delete attrs[relation.key];
           });
           return attrs;
-        } else {
-          return Model.__super__.toJSON.apply(this, arguments);
-        }
-      };
+        };
+      }
     }
 
     return Model;
