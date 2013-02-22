@@ -564,6 +564,9 @@
       };
       Model.prototype.fetchCollections = function() {
         var _this = this;
+        if (this.isNew()) {
+          return false;
+        }
         return _(this.relations).chain().filter(function(rel) {
           return rel.type === Backbone.HasMany;
         }).pluck('key').each(function(key) {
